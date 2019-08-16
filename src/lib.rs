@@ -1,6 +1,6 @@
 use ash::{extensions::khr, prelude::*, vk};
 use raw_window_handle::{HasRawWindowHandle, RawWindowHandle};
-use std::{ffi::CStr, ptr};
+use std::ffi::CStr;
 
 /// Create a surface from a raw surface handle.
 ///
@@ -14,6 +14,7 @@ pub unsafe fn create_surface(
     match window_handle.raw_window_handle() {
         #[cfg(target_os = "windows")]
         RawWindowHandle::Windows(handle) => {
+            use std::ptr;
             use winapi::um::libloaderapi::GetModuleHandleW;
 
             let hwnd = handle.hwnd;
