@@ -30,7 +30,7 @@ fn main() -> Result<(), Box<std::error::Error>> {
         let instance = entry.create_instance(&instance_desc, None)?;
 
         // Create a surface from winit window.
-        let _surface = ash_window::create_surface(&entry, &instance, &window)?;
+        let _surface = ash_window::create_surface(&entry, &instance, &window, None)?;
 
         event_loop.run(move |event, _, control_flow| {
             match event {

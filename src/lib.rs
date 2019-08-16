@@ -9,6 +9,7 @@ pub unsafe fn create_surface(
     entry: &ash::Entry,
     instance: &ash::Instance,
     window_handle: &impl HasRawWindowHandle,
+    allocation_callbacks: Option<&vk::AllocationCallbacks>,
 ) -> VkResult<vk::SurfaceKHR> {
     match window_handle.raw_window_handle() {
         #[cfg(target_os = "windows")]
@@ -17,12 +18,43 @@ pub unsafe fn create_surface(
 
             let hwnd = handle.hwnd;
             let hinstance = GetModuleHandleW(ptr::null());
-            let win32_surface_desc = vk::Win32SurfaceCreateInfoKHR::builder()
+            let surface_desc = vk::Win32SurfaceCreateInfoKHR::builder()
                 .hinstance(hinstance as *const _)
                 .hwnd(hwnd);
-            let win32_surface_fn = khr::Win32Surface::new(entry, instance);
-            win32_surface_fn.create_win32_surface(&win32_surface_desc, None)
+            let surface_fn = khr::Win32Surface::new(entry, instance);
+            surface_fn.create_win32_surface(&surface_desc, allocation_callbacks)
         }
+
+        #[cfg(any(
+            target_os = "linux",
+            target_os = "dragonfly",
+            target_os = "freebsd",
+            target_os = "netbsd",
+            target_os = "openbsd"
+        ))]
+        RawWindowHandle::Wayland(handle) => {
+            let surface_desc = vk::WaylandSurfaceCreateInfoKHR::builder()
+                .display(handle.display)
+                .surface(handle.surface);
+            let surface_fn = khr::WaylandSurface::new(entry, instance);
+            surface_fn.create_wayland_surface(&surface_desc, allocation_callbacks)
+        }
+
+        #[cfg(any(
+            target_os = "linux",
+            target_os = "dragonfly",
+            target_os = "freebsd",
+            target_os = "netbsd",
+            target_os = "openbsd"
+        ))]
+        RawWindowHandle::X11(handle) => {
+            let surface_desc = vk::XlibSurfaceCreateInfoKHR::builder()
+                .dpy(handle.display)
+                .window(handle.window);
+            let surface_fn = khr::XlibSurface::new(entry, instance);
+            surface_fn.create_xlib_surface(&surface_desc, allocation_callbacks)
+        }
+
         _ => unimplemented!(),
     }
 }
