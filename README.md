@@ -10,9 +10,32 @@
     <a href="LICENSE-APACHE">
       <img src="https://img.shields.io/badge/license-APACHE2-green.svg?style=flat-square" alt="License - Apache2">
     </a>
+    <br>
+    <a href="https://dev.azure.com/msiglreith/norse/_build/latest?definitionId=1&branchName=master">
+    <img src="https://dev.azure.com/msiglreith/norse/_apis/build/status/grr?branchName=master" alt="Build Status">
+    </a>
 </p>
 
-TODO
+Interoperability between [`ash`](https://github.com/MaikKlein/ash) and [`raw-window-handle`](https://github.com/rust-windowing/raw-window-handle) for surface creation.
+
+## Usage
+
+The library exposes two functions:
+
+- `enumerate_required_extension` returns the required instance extension needed for surface creation from a specific window handle.
+
+- `create_surface` allows to create a surface from a type implementing `HasRawWindowHandle`
+
+```rust
+ash_window::create_surface(&entry, &instance, &window, None)?;
+```
+
+## Support
+
+- [x] Windows (`VK_KHR_win32_surface`)
+- [x] Unix (`VK_KHR_xlib_surface`/`VK_KHR_wayland_surface`)
+- [ ] MacOS/IOS (`VK_EXT_metal_surface` not exposed)
+- [ ] Android (no Android Handle)
 
 ## License
 
