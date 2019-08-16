@@ -50,7 +50,7 @@ pub unsafe fn create_surface(
         ))]
         RawWindowHandle::X11(handle) => {
             let surface_desc = vk::XlibSurfaceCreateInfoKHR::builder()
-                .dpy(handle.display)
+                .dpy(handle.display as *mut _)
                 .window(handle.window);
             let surface_fn = khr::XlibSurface::new(entry, instance);
             surface_fn.create_xlib_surface(&surface_desc, allocation_callbacks)
