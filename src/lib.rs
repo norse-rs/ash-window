@@ -1,16 +1,25 @@
-use ash::{extensions::khr, prelude::*, vk};
+use ash::{
+    extensions::khr,
+    prelude::*,
+    version::{EntryV1_0, InstanceV1_0},
+    vk,
+};
 use raw_window_handle::{HasRawWindowHandle, RawWindowHandle};
 use std::ffi::CStr;
 
 /// Create a surface from a raw surface handle.
 ///
 /// `instance` must have created with platform specific surface extensions enabled.
-pub unsafe fn create_surface(
-    entry: &ash::Entry,
-    instance: &ash::Instance,
+pub unsafe fn create_surface<E, I>(
+    entry: &E,
+    instance: &I,
     window_handle: &impl HasRawWindowHandle,
     allocation_callbacks: Option<&vk::AllocationCallbacks>,
-) -> VkResult<vk::SurfaceKHR> {
+) -> VkResult<vk::SurfaceKHR>
+where
+    E: EntryV1_0,
+    I: InstanceV1_0,
+{
     match window_handle.raw_window_handle() {
         #[cfg(target_os = "windows")]
         RawWindowHandle::Windows(handle) => {
