@@ -114,7 +114,19 @@ pub fn enumerate_required_extension(window_handle: &impl HasRawWindowHandle) -> 
             target_os = "netbsd",
             target_os = "openbsd"
         ))]
-        RawWindowHandle::X11(_) => khr::XlibSurface::name(),
+        RawWindowHandle::Xlib(_) => khr::XlibSurface::name(),
+
+        #[cfg(any(
+            target_os = "linux",
+            target_os = "dragonfly",
+            target_os = "freebsd",
+            target_os = "netbsd",
+            target_os = "openbsd"
+        ))]
+        RawWindowHandle::Xcb(_) => khr::XcbSurface::name(),
+
+        #[cfg(any(target_os = "android"))]
+        RawWindowHandle::Android(_) => khr::AndroidSurface::name(),
 
         _ => unimplemented!(),
     }
