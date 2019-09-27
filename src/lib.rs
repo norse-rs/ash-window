@@ -57,12 +57,35 @@ where
             target_os = "netbsd",
             target_os = "openbsd"
         ))]
-        RawWindowHandle::X11(handle) => {
+        RawWindowHandle::Xlib(handle) => {
             let surface_desc = vk::XlibSurfaceCreateInfoKHR::builder()
                 .dpy(handle.display as *mut _)
                 .window(handle.window);
             let surface_fn = khr::XlibSurface::new(entry, instance);
             surface_fn.create_xlib_surface(&surface_desc, allocation_callbacks)
+        }
+
+        #[cfg(any(
+            target_os = "linux",
+            target_os = "dragonfly",
+            target_os = "freebsd",
+            target_os = "netbsd",
+            target_os = "openbsd"
+        ))]
+        RawWindowHandle::Xcb(handle) => {
+            let surface_desc = vk::XcbSurfaceCreateInfoKHR::builder()
+                .connection(handle.connection as *mut _)
+                .window(handle.surface);
+            let surface_fn = khr::XlibSurface::new(entry, instance);
+            surface_fn.create_xlib_surface(&surface_desc, allocation_callbacks)
+        }
+
+        #[cfg(any(target_os = "android"))]
+        RawWindowHandle::Android(handle) => {
+            let surface_desc =
+                vk::AndroidSurfaceCreateInfoKHR::builder().window(handle.a_native_window as _);
+            let surface_fn = khr::AndroidSurface::new(entry, instance);
+            surface_fn.create_android_surface(&surface_desc, allocation_callbacks)
         }
 
         _ => unimplemented!(),
