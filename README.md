@@ -7,15 +7,15 @@
     <a href="https://docs.rs/ash-window">
       <img src="https://docs.rs/ash-window/badge.svg?style=flat-square" alt="docs">
     </a>
+    <a href="https://github.com/norse-rs/ash-window/actions">
+      <img src="https://github.com/norse-rs/ash-window/workflows/ci/badge.svg?style=flat" alt="ci">
+    </a>
+    <br>
     <a href="LICENSE-MIT">
       <img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="License - MIT">
     </a>
     <a href="LICENSE-APACHE">
       <img src="https://img.shields.io/badge/license-APACHE2-green.svg?style=flat-square" alt="License - Apache2">
-    </a>
-    <br>
-    <a href="https://github.com/norse-rs/ash-window/actions">
-      <img src="https://github.com/norse-rs/ash-window/workflows/ci/badge.svg?style=flat" alt="ci">
     </a>
 </p>
 

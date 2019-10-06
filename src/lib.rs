@@ -89,7 +89,7 @@ where
         }
 
         #[cfg(any(target_os = "macos"))]
-        RawWindowHandle::Macos(handle) => {
+        RawWindowHandle::MacOS(handle) => {
             let surface_desc = vk::MacOSSurfaceCreateInfoMVK::builder().view(handle.ns_view);
             let surface_fn = mvk::MacOSSurface::new(entry, instance);
             surface_fn.create_mac_os_surface_mvk(&surface_desc, allocation_callbacks)
