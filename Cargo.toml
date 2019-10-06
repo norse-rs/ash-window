@@ -3,8 +3,14 @@ name = "ash-window"
 version = "0.1.0"
 authors = ["msiglreith <m.siglreith@gmail.com>"]
 edition = "2018"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+license = "MIT OR Apache-2.0"
+description = "Interop library between ash and raw-window-handle"
+documentation = "https://docs.rs/ash-window"
+repository = "https://github.com/norse-rs/ash-window"
+readme = "README.md"
+keywords = ["window", "ash", "graphics"]
+categories = ["game-engines", "graphics"]
+exclude = [".github"]
 
 [dependencies]
 ash = "0.29"

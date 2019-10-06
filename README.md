@@ -2,7 +2,10 @@
 <h1 align="center">ash-window</h1>
 <p align="center">
     <a href="https://github.com/norse-rs">
-       <img src="https://img.shields.io/badge/project-norse-9cf.svg?style=flat-square" alt="NORSE">
+      <img src="https://img.shields.io/badge/project-norse-9cf.svg?style=flat-square" alt="NORSE">
+    </a>
+    <a href="https://docs.rs/ash-window">
+      <img src="https://docs.rs/ash-window/badge.svg?style=flat-square" alt="docs">
     </a>
     <a href="LICENSE-MIT">
       <img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="License - MIT">
@@ -12,7 +15,7 @@
     </a>
     <br>
     <a href="https://github.com/norse-rs/ash-window/actions">
-        <img src="https://github.com/norse-rs/ash-window/workflows/ci/badge.svg?style=flat" alt="ci">
+      <img src="https://github.com/norse-rs/ash-window/workflows/ci/badge.svg?style=flat" alt="ci">
     </a>
 </p>
 
