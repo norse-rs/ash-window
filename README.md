@@ -11,8 +11,8 @@
       <img src="https://img.shields.io/badge/license-APACHE2-green.svg?style=flat-square" alt="License - Apache2">
     </a>
     <br>
-    <a href="https://dev.azure.com/msiglreith/norse/_build/latest?definitionId=3&branchName=master">
-    <img src="https://dev.azure.com/msiglreith/norse/_apis/build/status/norse-rs.ash-window?branchName=master" alt="Build Status">
+    <a href="https://github.com/norse-rs/ash-window/actions">
+        <img src="https://github.com/norse-rs/ash-window/workflows/ci/badge.svg?style=flat" alt="ci">
     </a>
 </p>
 
