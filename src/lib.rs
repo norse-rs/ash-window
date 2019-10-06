@@ -71,8 +71,8 @@ where
             let surface_desc = vk::XcbSurfaceCreateInfoKHR::builder()
                 .connection(handle.connection as *mut _)
                 .window(handle.window);
-            let surface_fn = khr::XlibSurface::new(entry, instance);
-            surface_fn.create_xlib_surface(&surface_desc, allocation_callbacks)
+            let surface_fn = khr::XcbSurface::new(entry, instance);
+            surface_fn.create_xcb_surface(&surface_desc, allocation_callbacks)
         }
 
         #[cfg(any(target_os = "android"))]
