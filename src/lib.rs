@@ -1,11 +1,16 @@
 use ash::{
-    extensions::khr,
     prelude::*,
     version::{EntryV1_0, InstanceV1_0},
     vk,
 };
 use raw_window_handle::{HasRawWindowHandle, RawWindowHandle};
 use std::ffi::CStr;
+
+#[cfg(not(any(target_os = "macos", target_os = "ios")))]
+use ash::extensions::khr;
+
+#[cfg(any(target_os = "macos", target_os = "ios"))]
+use ash::extensions::mvk;
 
 /// Create a surface from a raw surface handle.
 ///
@@ -90,7 +95,7 @@ where
             surface_fn.create_mac_os_surface_mvk(&surface_desc, allocation_callbacks)
         }
 
-        #[cfg(any(target_os = "macos"))]
+        #[cfg(any(target_os = "ios"))]
         RawWindowHandle::IOS(handle) => {
             let surface_desc = vk::IOSSurfaceCreateInfoMVK::builder().view(handle.ui_view);
             let surface_fn = mvk::IOSSurface::new(entry, instance);
