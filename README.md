@@ -21,6 +21,10 @@
 
 Interoperability between [`ash`](https://github.com/MaikKlein/ash) and [`raw-window-handle`](https://github.com/rust-windowing/raw-window-handle) for surface creation.
 
+```toml
+ash-window = "0.1"
+```
+
 ## Usage
 
 The library exposes two functions:
@@ -33,11 +37,17 @@ The library exposes two functions:
 ash_window::create_surface(&entry, &instance, &window, None)?;
 ```
 
+## Versions
+```toml
+ash = "0.29"
+raw-window-handle = "0.3"
+```
+
 ## Support
 
 - [x] Windows (`VK_KHR_win32_surface`)
 - [x] Unix (`VK_KHR_xlib_surface`/`VK_KHR_xcb_surface`/`VK_KHR_wayland_surface`)
-- [x] MacOS/IOS (`VK_MVK_macos_surface`/VK_MVK_ios_surface`, `VK_EXT_metal_surface` not exposed yet)
+- [x] MacOS/IOS (`VK_MVK_macos_surface`/`VK_MVK_ios_surface`, `VK_EXT_metal_surface` not exposed yet)
 - [x] Android (`VK_KHR_android_surface`)
 
 ## License
