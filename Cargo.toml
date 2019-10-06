@@ -8,10 +8,7 @@ edition = "2018"
 
 [dependencies]
 ash = "0.29"
-raw-window-handle = "0.2"
-
-[target.'cfg(windows)'.dependencies]
-winapi = { version = "0.3", features = ["libloaderapi"] }
+raw-window-handle = "0.3"
 
 [dev-dependencies]
-winit = { git = "https://github.com/msiglreith/winit.git", branch = "raw-window-handle-0.2" }
+winit = { git = "https://github.com/rust-windowing/winit.git", rev = "6f5e7e170cd7bd9be1bb302dd91ebd906d29cfe1" }

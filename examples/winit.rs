@@ -6,13 +6,14 @@
 //! On instance extensions platform specific extensions need to be enabled.
 
 use ash::{extensions::khr, version::EntryV1_0, vk};
+use std::error::Error;
 use winit::{
     event::{Event, WindowEvent},
     event_loop::{ControlFlow, EventLoop},
     window::WindowBuilder,
 };
 
-fn main() -> Result<(), Box<std::error::Error>> {
+fn main() -> Result<(), Box<dyn Error>> {
     let event_loop = EventLoop::new();
     let window = WindowBuilder::new().build(&event_loop)?;
 

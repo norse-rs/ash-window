@@ -23,14 +23,9 @@ where
     match window_handle.raw_window_handle() {
         #[cfg(target_os = "windows")]
         RawWindowHandle::Windows(handle) => {
-            use std::ptr;
-            use winapi::um::libloaderapi::GetModuleHandleW;
-
-            let hwnd = handle.hwnd;
-            let hinstance = GetModuleHandleW(ptr::null());
             let surface_desc = vk::Win32SurfaceCreateInfoKHR::builder()
-                .hinstance(hinstance as *const _)
-                .hwnd(hwnd);
+                .hinstance(handle.hinstance)
+                .hwnd(handle.hwnd);
             let surface_fn = khr::Win32Surface::new(entry, instance);
             surface_fn.create_win32_surface(&surface_desc, allocation_callbacks)
         }
@@ -75,7 +70,7 @@ where
         RawWindowHandle::Xcb(handle) => {
             let surface_desc = vk::XcbSurfaceCreateInfoKHR::builder()
                 .connection(handle.connection as *mut _)
-                .window(handle.surface);
+                .window(handle.window);
             let surface_fn = khr::XlibSurface::new(entry, instance);
             surface_fn.create_xlib_surface(&surface_desc, allocation_callbacks)
         }
@@ -86,6 +81,20 @@ where
                 vk::AndroidSurfaceCreateInfoKHR::builder().window(handle.a_native_window as _);
             let surface_fn = khr::AndroidSurface::new(entry, instance);
             surface_fn.create_android_surface(&surface_desc, allocation_callbacks)
+        }
+
+        #[cfg(any(target_os = "macos"))]
+        RawWindowHandle::Macos(handle) => {
+            let surface_desc = vk::MacOSSurfaceCreateInfoMVK::builder().view(handle.ns_view);
+            let surface_fn = mvk::MacOSSurface::new(entry, instance);
+            surface_fn.create_mac_os_surface_mvk(&surface_desc, allocation_callbacks)
+        }
+
+        #[cfg(any(target_os = "macos"))]
+        RawWindowHandle::IOS(handle) => {
+            let surface_desc = vk::IOSSurfaceCreateInfoMVK::builder().view(handle.ui_view);
+            let surface_fn = mvk::IOSSurface::new(entry, instance);
+            surface_fn.create_ios_surface_mvk(&surface_desc, allocation_callbacks)
         }
 
         _ => unimplemented!(),
@@ -127,6 +136,12 @@ pub fn enumerate_required_extension(window_handle: &impl HasRawWindowHandle) -> 
 
         #[cfg(any(target_os = "android"))]
         RawWindowHandle::Android(_) => khr::AndroidSurface::name(),
+
+        #[cfg(any(target_os = "macos"))]
+        RawWindowHandle::MacOS(_) => mvk::MacOSSurface::name(),
+
+        #[cfg(any(target_os = "ios"))]
+        RawWindowHandle::IOS(_) => mvk::IOSSurface::name(),
 
         _ => unimplemented!(),
     }
