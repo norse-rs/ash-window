@@ -1,25 +1,28 @@
-//! Demonstrate interop with winit windows.
+//! Demonstrate interop with beryllium/SDL windows.
 //!
-//! Sample creates a surface from a winit window through the
+//! Sample creates a surface from a window through the
 //! platform agnostic window handle trait.
 //!
 //! On instance extensions platform specific extensions need to be enabled.
 
 use ash::{extensions::khr, version::EntryV1_0, vk};
 use std::error::Error;
-use winit::{
-    event::{Event, WindowEvent},
-    event_loop::{ControlFlow, EventLoop},
-    window::WindowBuilder,
-};
+use beryllium::*;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let event_loop = EventLoop::new();
-    let window = WindowBuilder::new().build(&event_loop)?;
+    let sdl = beryllium::init()?;
+
+    let window = sdl.create_window(
+        "ash-window x beryllium",
+        WINDOW_POSITION_CENTERED,
+        WINDOW_POSITION_CENTERED,
+        800,
+        600,
+        WindowFlags::default(),
+    )?;
 
     unsafe {
         let entry = ash::Entry::new()?;
-
         let instance_extensions = vec![
             khr::Surface::name().as_ptr(),
             // Platform specific surface extensions
@@ -35,13 +38,16 @@ fn main() -> Result<(), Box<dyn Error>> {
         // Create a surface from winit window.
         let surface = ash_window::create_surface(&entry, &instance, &window, None)?;
         println!("surface: {:?}", surface);
-
-        event_loop.run(move |event, _, control_flow| match event {
-            Event::WindowEvent {
-                event: WindowEvent::CloseRequested,
-                window_id,
-            } if window_id == window.id() => *control_flow = ControlFlow::Exit,
-            _ => *control_flow = ControlFlow::Wait,
-        });
     }
+
+    loop {
+        while let Some(event) = sdl.poll_event() {
+            match event {
+                Event::Quit { timestamp } => break,
+                _ => (),
+            }
+        }
+    }
+
+    Ok(())
 }

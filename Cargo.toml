@@ -17,4 +17,4 @@ ash = "0.29"
 raw-window-handle = "0.3"
 
 [dev-dependencies]
-winit = { git = "https://github.com/rust-windowing/winit.git", rev = "6f5e7e170cd7bd9be1bb302dd91ebd906d29cfe1" }
+beryllium = "0.1"
