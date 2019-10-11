@@ -15,6 +15,3 @@ exclude = [".github"]
 [dependencies]
 ash = "0.29"
 raw-window-handle = "0.3"
-
-[dev-dependencies]
-beryllium = "0.1"
