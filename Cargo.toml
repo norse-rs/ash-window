@@ -10,7 +10,7 @@ repository = "https://github.com/norse-rs/ash-window"
 readme = "README.md"
 keywords = ["window", "ash", "graphics"]
 categories = ["game-engines", "graphics"]
-exclude = [".github"]
+exclude = [".github/*"]
 
 [dependencies]
 ash = "0.29"
