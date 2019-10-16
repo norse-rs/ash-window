@@ -102,15 +102,19 @@ where
             surface_fn.create_ios_surface_mvk(&surface_desc, allocation_callbacks)
         }
 
-        _ => unimplemented!(),
+        _ => Err(vk::Result::ERROR_EXTENSION_NOT_PRESENT), // not supported
     }
 }
 
-/// Query the required instance extension for creating a surface from a window handle.
-pub fn enumerate_required_extension(window_handle: &impl HasRawWindowHandle) -> &'static CStr {
-    match window_handle.raw_window_handle() {
+/// Query the required instance extensions for creating a surface from a window handle.
+///
+/// The returned extensions will include all extension dependencies.
+pub fn enumerate_required_extensions(
+    window_handle: &impl HasRawWindowHandle,
+) -> VkResult<Vec<&'static CStr>> {
+    let extensions = match window_handle.raw_window_handle() {
         #[cfg(target_os = "windows")]
-        RawWindowHandle::Windows(_) => khr::Win32Surface::name(),
+        RawWindowHandle::Windows(_) => vec![khr::Surface::name(), khr::Win32Surface::name()],
 
         #[cfg(any(
             target_os = "linux",
@@ -119,7 +123,7 @@ pub fn enumerate_required_extension(window_handle: &impl HasRawWindowHandle) -> 
             target_os = "netbsd",
             target_os = "openbsd"
         ))]
-        RawWindowHandle::Wayland(_) => khr::WaylandSurface::name(),
+        RawWindowHandle::Wayland(_) => vec![khr::Surface::name(), khr::WaylandSurface::name()],
 
         #[cfg(any(
             target_os = "linux",
@@ -128,7 +132,7 @@ pub fn enumerate_required_extension(window_handle: &impl HasRawWindowHandle) -> 
             target_os = "netbsd",
             target_os = "openbsd"
         ))]
-        RawWindowHandle::Xlib(_) => khr::XlibSurface::name(),
+        RawWindowHandle::Xlib(_) => vec![khr::Surface::name(), khr::XlibSurface::name()],
 
         #[cfg(any(
             target_os = "linux",
@@ -137,17 +141,19 @@ pub fn enumerate_required_extension(window_handle: &impl HasRawWindowHandle) -> 
             target_os = "netbsd",
             target_os = "openbsd"
         ))]
-        RawWindowHandle::Xcb(_) => khr::XcbSurface::name(),
+        RawWindowHandle::Xcb(_) => vec![khr::Surface::name(), khr::XcbSurface::name()],
 
         #[cfg(any(target_os = "android"))]
-        RawWindowHandle::Android(_) => khr::AndroidSurface::name(),
+        RawWindowHandle::Android(_) => vec![khr::Surface::name(), khr::AndroidSurface::name()],
 
         #[cfg(any(target_os = "macos"))]
-        RawWindowHandle::MacOS(_) => mvk::MacOSSurface::name(),
+        RawWindowHandle::MacOS(_) => vec![khr::Surface::name(), mvk::MacOSSurface::name()],
 
         #[cfg(any(target_os = "ios"))]
-        RawWindowHandle::IOS(_) => mvk::IOSSurface::name(),
+        RawWindowHandle::IOS(_) => vec![khr::Surface::name(), mvk::IOSSurface::name()],
 
-        _ => unimplemented!(),
-    }
+        _ => return Err(vk::Result::ERROR_EXTENSION_NOT_PRESENT),
+    };
+
+    Ok(extensions)
 }

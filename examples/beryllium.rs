@@ -5,7 +5,7 @@
 //!
 //! On instance extensions platform specific extensions need to be enabled.
 
-use ash::{extensions::khr, version::EntryV1_0, vk};
+use ash::{version::EntryV1_0, vk};
 use beryllium::*;
 use std::error::Error;
 
@@ -23,16 +23,13 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     unsafe {
         let entry = ash::Entry::new()?;
-        let instance_extensions = vec![
-            khr::Surface::name().as_ptr(),
-            // Platform specific surface extensions
-            #[cfg(windows)]
-            khr::Win32Surface::name().as_ptr(),
-        ];
+        let surface_extensions = ash_window::enumerate_required_extensions(&window)?;
+        let instance_extensions = surface_extensions.iter().map(|ext| ext.as_ptr()).collect::<Vec<_>>();
         let app_desc = vk::ApplicationInfo::builder().api_version(ash::vk_make_version!(1, 0, 0));
         let instance_desc = vk::InstanceCreateInfo::builder()
             .application_info(&app_desc)
             .enabled_extension_names(&instance_extensions);
+
         let instance = entry.create_instance(&instance_desc, None)?;
 
         // Create a surface from winit window.
