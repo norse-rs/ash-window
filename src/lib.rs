@@ -1,13 +1,11 @@
 use ash::{
+    extensions::khr,
     prelude::*,
     version::{EntryV1_0, InstanceV1_0},
     vk,
 };
 use raw_window_handle::{HasRawWindowHandle, RawWindowHandle};
 use std::ffi::CStr;
-
-#[cfg(not(any(target_os = "macos", target_os = "ios")))]
-use ash::extensions::khr;
 
 #[cfg(any(target_os = "macos", target_os = "ios"))]
 use ash::extensions::mvk;
