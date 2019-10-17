@@ -18,3 +18,4 @@ raw-window-handle = "0.3"
 
 [dev-dependencies]
 beryllium = "0.1.2"
+winit = "0.19.4"

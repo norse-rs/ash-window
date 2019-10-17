@@ -6,20 +6,13 @@
 //! On instance extensions platform specific extensions need to be enabled.
 
 use ash::{version::EntryV1_0, vk};
-use beryllium::*;
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let sdl = beryllium::init()?;
-
-    let window = sdl.create_window(
-        "ash-window x beryllium",
-        WINDOW_POSITION_CENTERED,
-        WINDOW_POSITION_CENTERED,
-        800,
-        600,
-        WindowFlags::default(),
-    )?;
+    let mut events_loop = winit::EventsLoop::new();
+    let window = winit::WindowBuilder::new()
+        .with_dimensions((800, 600).into())
+        .build(&events_loop)?;
 
     unsafe {
         let entry = ash::Entry::new()?;
@@ -40,13 +33,15 @@ fn main() -> Result<(), Box<dyn Error>> {
         let surface_fn = ash::extensions::khr::Surface::new(&entry, &instance);
         println!("surface: {:?}", surface);
 
-        'main: loop {
-            while let Some(event) = sdl.poll_event() {
-                match event {
-                    Event::Quit { .. } => break 'main,
-                    _ => (),
-                }
-            }
+        let mut running = true;
+        while running {
+            events_loop.poll_events(|event| match event {
+                winit::Event::WindowEvent {
+                    event: winit::WindowEvent::CloseRequested,
+                    ..
+                } => running = false,
+                _ => (),
+            });
         }
 
         surface_fn.destroy_surface(surface, None);
