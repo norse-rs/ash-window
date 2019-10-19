@@ -4,6 +4,9 @@
     <a href="https://github.com/norse-rs">
       <img src="https://img.shields.io/badge/project-norse-9cf.svg?style=flat-square" alt="NORSE">
     </a>
+    <a href="https://crates.io/crates/ash-window">
+      <img src="https://img.shields.io/crates/v/ash-window?style=flat-square" alt = "crates.io">
+    </a>
     <a href="https://docs.rs/ash-window">
       <img src="https://docs.rs/ash-window/badge.svg?style=flat-square" alt="docs">
     </a>
@@ -29,7 +32,7 @@ ash-window = "0.1"
 
 The library exposes two functions:
 
-- `enumerate_required_extension` returns the required instance extension needed for surface creation from a specific window handle.
+- `enumerate_required_extensions` returns the required instance extensions needed for surface creation from a specific window handle.
 
 - `create_surface` allows to create a surface from a type implementing `HasRawWindowHandle`
 
