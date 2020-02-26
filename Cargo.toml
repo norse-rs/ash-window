@@ -13,9 +13,9 @@ categories = ["game-engines", "graphics"]
 exclude = [".github/*"]
 
 [dependencies]
-ash = "0.29"
+ash = {git = "https://github.com/MaikKlein/ash" }
 raw-window-handle = "0.3"
 
 [dev-dependencies]
 beryllium = "0.1.2"
-winit = "0.19.4"
+winit = "^0.19.4"
