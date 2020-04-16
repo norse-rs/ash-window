@@ -50,7 +50,7 @@ raw-window-handle = "0.3"
 
 - [x] Windows (`VK_KHR_win32_surface`)
 - [x] Unix (`VK_KHR_xlib_surface`/`VK_KHR_xcb_surface`/`VK_KHR_wayland_surface`)
-- [x] MacOS/IOS (`VK_MVK_macos_surface`/`VK_MVK_ios_surface`, `VK_EXT_metal_surface` not exposed yet)
+- [x] MacOS/IOS (`VK_EXT_metal_surface`)
 - [x] Android (`VK_KHR_android_surface`)
 
 ## License
