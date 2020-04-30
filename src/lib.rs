@@ -16,7 +16,7 @@ use ash::extensions::mvk;
 pub unsafe fn create_surface<E, I>(
     entry: &E,
     instance: &I,
-    window_handle: &impl HasRawWindowHandle,
+    window_handle: &dyn HasRawWindowHandle,
     allocation_callbacks: Option<&vk::AllocationCallbacks>,
 ) -> VkResult<vk::SurfaceKHR>
 where
@@ -108,7 +108,7 @@ where
 ///
 /// The returned extensions will include all extension dependencies.
 pub fn enumerate_required_extensions(
-    window_handle: &impl HasRawWindowHandle,
+    window_handle: &dyn HasRawWindowHandle,
 ) -> VkResult<Vec<&'static CStr>> {
     let extensions = match window_handle.raw_window_handle() {
         #[cfg(target_os = "windows")]
