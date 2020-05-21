@@ -28,7 +28,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             .iter()
             .map(|ext| ext.as_ptr())
             .collect::<Vec<_>>();
-        let app_desc = vk::ApplicationInfo::builder().api_version(ash::vk_make_version!(1, 0, 0));
+        let app_desc = vk::ApplicationInfo::builder().api_version(vk::make_version(1, 0, 0));
         let instance_desc = vk::InstanceCreateInfo::builder()
             .application_info(&app_desc)
             .enabled_extension_names(&instance_extensions);
