@@ -1,4 +1,16 @@
-# Unreleased
+# Version 0.4.1
+## Changes
+- Use `raw-window-metal` to automatically allocate a `CAMetalLayer` if there is none
+
+# Version 0.4.0
+## Changes
+- Update `ash` version to 0.31
+
+# Version 0.3.0
+## Changes
+- Update `ash` version to 0.30
+
+# Version 0.2.0
 ## Changes
 - `enumerate_required_extension` renamed to `enumerate_required_extensions`
 - `enumerate_required_extensions` will return an error if the window handle is not supported instead of panic.
