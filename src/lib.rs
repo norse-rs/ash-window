@@ -8,7 +8,7 @@ use raw_window_handle::{HasRawWindowHandle, RawWindowHandle};
 use std::ffi::CStr;
 
 #[cfg(any(target_os = "macos", target_os = "ios"))]
-use ash::extensions::mvk;
+use ash::extensions::ext; // portability extensions
 
 /// Create a surface from a raw surface handle.
 ///
@@ -88,16 +88,30 @@ where
 
         #[cfg(any(target_os = "macos"))]
         RawWindowHandle::MacOS(handle) => {
-            let surface_desc = vk::MacOSSurfaceCreateInfoMVK::builder().view(&*handle.ns_view);
-            let surface_fn = mvk::MacOSSurface::new(entry, instance);
-            surface_fn.create_mac_os_surface_mvk(&surface_desc, allocation_callbacks)
+            use raw_window_metal::{macos, Layer};
+
+            let layer = match macos::metal_layer_from_handle(handle) {
+                Layer::Existing(layer) | Layer::Allocated(layer) => layer as *mut _,
+                Layer::None => return Err(vk::Result::ERROR_INITIALIZATION_FAILED)
+            };
+
+            let surface_desc = vk::MetalSurfaceCreateInfoEXT::builder().layer(&*layer);
+            let surface_fn = ext::MetalSurface::new(entry, instance);
+            surface_fn.create_metal_surface(&surface_desc, allocation_callbacks)
         }
 
         #[cfg(any(target_os = "ios"))]
         RawWindowHandle::IOS(handle) => {
-            let surface_desc = vk::IOSSurfaceCreateInfoMVK::builder().view(&*handle.ui_view);
-            let surface_fn = mvk::IOSSurface::new(entry, instance);
-            surface_fn.create_ios_surface_mvk(&surface_desc, allocation_callbacks)
+            use raw_window_metal::{ios, Layer};
+
+            let layer = match ios::metal_layer_from_handle(handle) {
+                Layer::Existing(layer) | Layer::Allocated(layer) => layer as *mut _,
+                Layer::None => return Err(vk::Result::ERROR_INITIALIZATION_FAILED)
+            };
+
+            let surface_desc = vk::MetalSurfaceCreateInfoEXT::builder().layer(&*layer);
+            let surface_fn = ext::MetalSurface::new(entry, instance);
+            surface_fn.create_metal_surface(&surface_desc, allocation_callbacks)
         }
 
         _ => Err(vk::Result::ERROR_EXTENSION_NOT_PRESENT), // not supported
@@ -145,10 +159,10 @@ pub fn enumerate_required_extensions(
         RawWindowHandle::Android(_) => vec![khr::Surface::name(), khr::AndroidSurface::name()],
 
         #[cfg(any(target_os = "macos"))]
-        RawWindowHandle::MacOS(_) => vec![khr::Surface::name(), mvk::MacOSSurface::name()],
+        RawWindowHandle::MacOS(_) => vec![khr::Surface::name(), ext::MetalSurface::name()],
 
         #[cfg(any(target_os = "ios"))]
-        RawWindowHandle::IOS(_) => vec![khr::Surface::name(), mvk::IOSSurface::name()],
+        RawWindowHandle::IOS(_) => vec![khr::Surface::name(), ext::MetalSurface::name()],
 
         _ => return Err(vk::Result::ERROR_EXTENSION_NOT_PRESENT),
     };

@@ -16,6 +16,9 @@ exclude = [".github/*"]
 ash = "0.31"
 raw-window-handle = "0.3"
 
+[target.'cfg(any(target_os = "macos", target_os = "ios"))'.dependencies]
+raw-window-metal = "0.1"
+
 [dev-dependencies]
 beryllium = "0.1.2"
 winit = "0.19.4"
