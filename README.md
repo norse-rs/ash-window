@@ -22,6 +22,9 @@
     </a>
 </p>
 
+**UPDATE:** Now part of [`ash`](https://github.com/MaikKlein/ash)
+------
+
 Interoperability between [`ash`](https://github.com/MaikKlein/ash) and [`raw-window-handle`](https://github.com/rust-windowing/raw-window-handle) for surface creation.
 
 ```toml
